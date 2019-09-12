@@ -35,7 +35,6 @@ var classroom = undefined;
 
 async function askCredentials() {
     let user = readline.question('What is your Username? ');
-    readline.stdout
     let pass = readline.question('What is your Password? ', {hideEchoBack: true});
     return {
         "username": user,
