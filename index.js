@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const readline = require('readline-sync');
 const nodemailer = require('nodemailer');
-const credentials = require('./credentials/credentials.json');
+const credentialsJSON = require('./credentials/credentials.json');
 
 
 var contentArray = undefined;
@@ -12,7 +12,7 @@ var classroom = undefined;
     await console.log('Browser Started');
     const page = await browser.newPage();
     await console.log('New Page Created');
-    await page.goto('https://academicos.uniritter.edu.br/administracao/login.php');
+    await page.goto(credentialsJSON.url);
     await console.log('Entered University Website');
     await console.log('Asking Credentials...');
     const credentials = await askCredentials();
@@ -59,18 +59,18 @@ async function beautifyContent() {
 
 async function sendMail() {
     let transporter = nodemailer.createTransport({
-        host: credentials.email_host,
+        host: credentialsJSON.email_host,
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {
-            user: credentials.email_user,
-            pass: credentials.email_password
+            user: credentialsJSON.email_user,
+            pass: credentialsJSON.email_password
         }
     });
 
     let info = await transporter.sendMail({
-        from: credentials.name + ' <' + credentials.email_user + '>',
-        to: credentials.email_user,
+        from: credentialsJSON.name + ' <' + credentialsJSON.email_user + '>',
+        to: credentialsJSON.email_user,
         subject: 'Classroom',
         text: classroom
     });
