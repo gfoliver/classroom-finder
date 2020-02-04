@@ -88,6 +88,6 @@ typings/
 .dynamodb/
 
 # credentials
-credentials/*.json
+src/credentials/*
 
 package-lock.json
