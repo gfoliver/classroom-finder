@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 const credentialsJSON = require('./credentials/credentials.json');
 const fs = require('fs');
 
-(async () => {
+async function fetch() {
     const browser = await puppeteer.launch();
     console.log('Browser created');
 
@@ -27,7 +27,7 @@ const fs = require('fs');
     await sendMail(classroomText);
 
     await browser.close();
-})();
+}
 
 async function authenticate(page) {
     const [usernameInput] = await page.$x('//*[@id="mainConteudo"]/div/div/form/div/div/div[3]/div/table/tbody/tr/td[2]/table/tbody/tr[2]/td/input');
@@ -77,3 +77,5 @@ async function getTemplateContent(template, callback) {
         callback(data);
     });
 }
+
+module.exports = fetch;
