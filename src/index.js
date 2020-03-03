@@ -14,13 +14,16 @@ async function fetch() {
     console.log(`Authenticating`);
     await authenticate(page);
 
-    await page.waitForXPath('//*[@id="mainConteudo"]/div[1]/div/div[2]/div[1]/div/div/div[2]/p');
+    await page.waitForXPath('//*[@id="mainConteudo"]/div[1]/div/div[2]/div[1]/div/div/div[2]');
 
-    const [classroom] = await page.$x('//*[@id="mainConteudo"]/div[1]/div/div[2]/div[1]/div/div/div[2]/p');
+    const [classroom] = await page.$x('//*[@id="mainConteudo"]/div[1]/div/div[2]/div[1]/div/div/div[2]');
 
     const classroomTextContent = await classroom.getProperty('textContent');
 
-    const classroomText = await classroomTextContent.jsonValue();
+    let classroomText = await classroomTextContent.jsonValue();
+    
+    classroomText = classroomText.split('Visualizar')[0];
+
     console.log(`Classroom for today: ${classroomText}`);
     
     console.log(`Sending E-mail`);
@@ -36,6 +39,7 @@ async function authenticate(page) {
 
     await usernameInput.type(credentialsJSON.username)
     await passwordInput.type(credentialsJSON.password);
+
     await submitInput.click();
 }
 
@@ -53,13 +57,13 @@ async function sendMail(classroom) {
 
     const date = new Date();
 
-    await getTemplateContent('src/template.html', async template => {
+    await getTemplateContent('./template.html', async template => {
         let formattedDate = `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
 
         let info = await transporter.sendMail({
             from: credentialsJSON.name + ' <' + credentialsJSON.email_user + '>',
             to: credentialsJSON.email_user,
-            subject: `Classroom for ${formattedDate}`,
+            subject: `Classroom Finder | ${formattedDate}`,
             html: template.replace('$$_TITLE_$$', classroom).replace('$$_DATE_$$', formattedDate)
         });
     
