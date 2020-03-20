@@ -1,4 +1,6 @@
-# classroom-finder
+![Classroom Finder](https://repository-images.githubusercontent.com/207964288/c1c15680-6a2c-11ea-90c3-2647f6b95aca)
+
+# Classroom Finder
 
 A NodeJs Web Scraper to find my classroom inside my school's website
 
